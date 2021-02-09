@@ -32,9 +32,13 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos):
             escondida=escondida+letra
     
     while True:
-        print("La pregunta es: ")
-        print(pregunta_original,"\n")
-        print("ESCRIBA \"PISTA\" PARA REVELAR UNA LETRA".center(100,"*"))
+        print("\n"*4)
+        print("*"*100)
+        print("*",("La pregunta es: ").center(96),"*".rjust(0))
+        print("*"*100)
+        print("*",pregunta_original.center(96),"*".rjust(0))
+        print("*"*100)
+        print("*escriba \"PISTA\" para revelar una letra*".center(100," "))
         respuesta_del_jugador=input(f"{escondida} :")
         
         
@@ -47,23 +51,34 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos):
 
         if respuesta_del_jugador.lower() == respuesta_verdadera.lower():            
             puntos+=10-pistas_usadas
-            print("CORRECTO")
+            print("\n")
+            print("*"*100)
+            print(("CORRECTO").center(100))
+            print("*"*100)
             break
         
         if respuesta_del_jugador.lower() != respuesta_verdadera.lower() and respuesta_del_jugador.lower() != "pista":
-            print("INCORRECTO")
-            print(f"La respuesta es: {respuesta_verdadera}")
+            print("\n")
+            print("*"*100)
+            print("*",("INCORRECTO").center(96),"*".rjust(0))
+            print("*",(f"La respuesta era: {respuesta_verdadera}").center(96),"*".rjust(0))
+            print("*"*100)
             puntos=0
             break
     
-        
-        
-    input("ENTER")
+    mostrar_matriz(matriz,puntos) 
+    print("\n")    
+    input(("*oprima \"ENTER\" para continuar*").center(100))
     return puntos
 
 
 
-
+def mostrar_matriz(matriz,puntos):#falta que sume los puntos
+    for a in range(len(matriz)):
+        print("\n")
+        for b in range(len(matriz)):
+            print((f"{matriz[a][b]}"), end=" ")
+        
 
 
 
@@ -131,7 +146,9 @@ while True:
             
             if eleccion == 0:
                 if categorias[0].count("*") > 0:
-                    print("Esta opcion ya no esta disponible".center(100))
+                    print("*"*100)
+                    print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+                    print("*"*100)
                 else:
                     Generar_preguntas_deportes()
                     vacio="*"*len(categorias[eleccion])
