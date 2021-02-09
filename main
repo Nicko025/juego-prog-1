@@ -5,31 +5,31 @@ import random
 
 
 def hacer_preguntas(preguntas_generadas):
-    
-    resp=""
-    total_preguntas=0    
+    total_preguntas=0
+    pos=0
     while total_preguntas < 4:
-        randomizador=random.randint(1,4)
-        
+        randomizador=random.randint(1,12)        
         for pregunta in range(len(preguntas_generadas)):
             if str(randomizador) == preguntas_generadas[pregunta][0]:
+                pos+=1
                 pregunta_original = preguntas_generadas[pregunta][1]
                 respuesta_verdadera = preguntas_generadas[pregunta][2]                
-                procesar_respuesta(pregunta_original,respuesta_verdadera,puntos)              
+                procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos)              
                 preguntas_generadas[pregunta][0] = ""                
                 total_preguntas+=1
 
 
-def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos):
+def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     escondida=""
     pistas_usadas=0
     cont=0
     for letra in respuesta_verdadera:
         if letra.isalpha():
             letra=letra.replace(letra,"*")
-            escondida=escondida+" "+letra
+            escondida=escondida+letra
         else:
             escondida=escondida+letra
+            
     
     while True:
         print("\n"*4)
@@ -39,18 +39,20 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos):
         print("*",pregunta_original.center(96),"*".rjust(0))
         print("*"*100)
         print("*escriba \"PISTA\" para revelar una letra*".center(100," "))
-        respuesta_del_jugador=input(f"{escondida} :")
+        respuesta_del_jugador=input(f"{escondida} (+{10 - pistas_usadas}Pts):")
         
         
-        if respuesta_del_jugador.lower() == "pista":
+        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(escondida):
             escondida=list(escondida)
             pistas_usadas+=1
             escondida[cont]=respuesta_verdadera[cont]
             escondida="".join(escondida)
             cont+=1
+            if pistas_usadas > 10:
+                pistas_usadas = 10
 
         if respuesta_del_jugador.lower() == respuesta_verdadera.lower():            
-            puntos+=10-pistas_usadas
+            puntos=10-pistas_usadas
             print("\n")
             print("*"*100)
             print(("CORRECTO").center(100))
@@ -66,18 +68,21 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos):
             puntos=0
             break
     
-    mostrar_matriz(matriz,puntos) 
+    mostrar_matriz(matriz,puntos,eleccion,pos)
     print("\n")    
     input(("*oprima \"ENTER\" para continuar*").center(100))
     return puntos
 
 
 
-def mostrar_matriz(matriz,puntos):#falta que sume los puntos
-    for a in range(len(matriz)):
+def mostrar_matriz(matriz,puntos,eleccion,pos):#falta que sume los puntos
+    matriz[eleccion][pos]=f"+{puntos}Pts"    
+    for b in range(len(matriz)):
         print("\n")
-        for b in range(len(matriz)):
-            print((f"{matriz[a][b]}"), end=" ")
+        for c in range(len(matriz)):
+            print((f"{matriz[b][c]}"), end=" ")
+            
+    
         
 
 
@@ -96,9 +101,31 @@ def Generar_preguntas_deportes():
     hacer_preguntas(preguntas_generadas)
     pregunta.close()
 
+def Generar_preguntas_AyM():    
+#apertura del archivo Arte
+    pregunta=open("Arte.txt","r",encoding="utf-8")
+    linea=pregunta.readline()
+    preguntas_generadas=[]
+    while linea:
+        linea=linea.strip()
+        linea=linea.split(";")
+        preguntas_generadas.append(linea)
+        linea=pregunta.readline()
+    hacer_preguntas(preguntas_generadas)
+    pregunta.close()        
         
-        
-
+def Generar_preguntas_Geografia():    
+#apertura del archivo Arte
+    pregunta=open("Geografia.txt","r",encoding="utf-8")
+    linea=pregunta.readline()
+    preguntas_generadas=[]
+    while linea:
+        linea=linea.strip()
+        linea=linea.split(";")
+        preguntas_generadas.append(linea)
+        linea=pregunta.readline()
+    hacer_preguntas(preguntas_generadas)
+    pregunta.close() 
 
 
 #Programa Principal
@@ -160,23 +187,29 @@ while True:
                     #Arte y Musica
             if eleccion == 1:
                 if categorias[1].count("*") > 0:
-                    print("Esta opcion ya no esta disponible".center(100))
-                else:                    
-#                preguntar_AyM(eleccion,matriz)
+                    print("*"*100)
+                    print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+                    print("*"*100)
+                else:
+                    Generar_preguntas_AyM()                
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
+                    orden_fila+=1
                     
 #####################################################################################
                     #Geografia
             if eleccion == 2:
                 if categorias[2].count("*") > 0:
-                    print("Esta opcion ya no esta disponible".center(100))
+                    print("*"*100)
+                    print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+                    print("*"*100)
                 else:                    
-#                preguntar_geografia(eleccion,matriz)
+                    Generar_preguntas_Geografia() 
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
+                    orden_fila+=1
 
 ################################################################################
                     #espectaculo
@@ -214,4 +247,3 @@ while True:
         
     except ValueError:
         print("*** ERROR, Debe ingresarse un numero del 1 al 5 ***".center(100))
-
