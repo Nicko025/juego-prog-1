@@ -1,2 +1,200 @@
 import random
 
+#Funciones
+
+
+
+def hacer_preguntas(preguntas_generadas):
+    
+    resp=""
+    total_preguntas=0    
+    while total_preguntas < 4:
+        randomizador=random.randint(1,4)
+        
+        for pregunta in range(len(preguntas_generadas)):
+            if str(randomizador) == preguntas_generadas[pregunta][0]:
+                pregunta_original = preguntas_generadas[pregunta][1]
+                respuesta_verdadera = preguntas_generadas[pregunta][2]                
+                procesar_respuesta(pregunta_original,respuesta_verdadera,puntos)              
+                preguntas_generadas[pregunta][0] = ""                
+                total_preguntas+=1
+
+
+def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos):
+    escondida=""
+    pistas_usadas=0
+    cont=0
+    for letra in respuesta_verdadera:
+        if letra.isalpha():
+            letra=letra.replace(letra,"*")
+            escondida=escondida+" "+letra
+        else:
+            escondida=escondida+letra
+    
+    while True:
+        print("La pregunta es: ")
+        print(pregunta_original,"\n")
+        print("ESCRIBA \"PISTA\" PARA REVELAR UNA LETRA".center(100,"*"))
+        respuesta_del_jugador=input(f"{escondida} :")
+        
+        
+        if respuesta_del_jugador.lower() == "pista":
+            escondida=list(escondida)
+            pistas_usadas+=1
+            escondida[cont]=respuesta_verdadera[cont]
+            escondida="".join(escondida)
+            cont+=1
+
+        if respuesta_del_jugador.lower() == respuesta_verdadera.lower():            
+            puntos+=10-pistas_usadas
+            print("CORRECTO")
+            break
+        
+        if respuesta_del_jugador.lower() != respuesta_verdadera.lower() and respuesta_del_jugador.lower() != "pista":
+            print("INCORRECTO")
+            print(f"La respuesta es: {respuesta_verdadera}")
+            puntos=0
+            break
+    
+        
+        
+    input("ENTER")
+    return puntos
+
+
+
+
+
+
+
+
+def Generar_preguntas_deportes():    
+#apertura del archivo deporte
+    pregunta=open("deporte.txt","r",encoding="utf-8")
+    linea=pregunta.readline()
+    preguntas_generadas=[]
+    while linea:
+        linea=linea.strip()
+        linea=linea.split(";")
+        preguntas_generadas.append(linea)
+        linea=pregunta.readline()
+    hacer_preguntas(preguntas_generadas)
+    pregunta.close()
+
+        
+        
+
+
+
+#Programa Principal
+    
+print("*"*100)
+print("BIENVENIDO AL MEMORIOSO".center(100,"*"))
+print("*"*100)
+print("*","*".rjust(98))
+print("*","#","Es un juego clasico de preguntas y respuestas en el que usted selecciona que categoria jugar.","*".rjust(2))
+print("*","*".rjust(98))
+print("*","#","Consta de 4 preguntas por cada una de las 5 categorias, cada pregunta correcta vale 10 puntos.","*".rjust(1))
+print("*","*".rjust(98))
+print("*","#","Si se contesta la pregunta de forma erronea se dara esa pregunta por perdida con 0 puntos","*".rjust(6))
+print("*","*".rjust(98))
+print("*","#","Si no la sabe puede tener una pista, pero por cada ayuda se le restara 1 punto.","*".rjust(16))
+print("*","*".rjust(98))
+print("*"*100)
+nada=input(f"* Para comenzar oprima solo ENTER *".center(100))
+if nada != "":
+    print("Era solo ENTER, pero bueno... ¡A jugar!".center(100))
+else:
+    print("¡A jugar!".center(100),"\n")
+    print("*"*100)
+
+    
+
+while True:
+    
+    categorias=["Deportes","Arte y Musica","Geografia","Espectaculo","Historia"]
+    matriz=[[f"{categorias[0]}:","-","-","-","-"],[f"{categorias[1]}:","-","-","-","-"],[f"{categorias[2]}:","-","-","-","-"],[f"{categorias[3]}:","-","-","-","-"],[f"{categorias[4]}:","-","-","-","-"]]
+    cont=5
+    orden_fila=0
+    puntos=0
+    try:
+        while cont > 1:
+            print(" Las categorias disponibles son ".center(100,"*"))            
+            print("*"*100)
+            print("*"*3,"1.",categorias[0],"*"*5,"2.",categorias[1],"*"*5,"3.",categorias[2],"*"*5,"4.",categorias[3],"*"*5,"5.",categorias[4],"*"*3)
+            print("*"*100)
+            eleccion=int(input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100)))
+            eleccion=eleccion-1
+
+####################################################################################
+                    #Deportes            
+            
+            if eleccion == 0:
+                if categorias[0].count("*") > 0:
+                    print("Esta opcion ya no esta disponible".center(100))
+                else:
+                    Generar_preguntas_deportes()
+                    vacio="*"*len(categorias[eleccion])
+                    categorias[eleccion]=vacio
+                    cont-=1
+                    orden_fila+=1
+
+####################################################################################
+                    #Arte y Musica
+            if eleccion == 1:
+                if categorias[1].count("*") > 0:
+                    print("Esta opcion ya no esta disponible".center(100))
+                else:                    
+#                preguntar_AyM(eleccion,matriz)
+                    vacio="*"*len(categorias[eleccion])
+                    categorias[eleccion]=vacio
+                    cont-=1
+                    
+#####################################################################################
+                    #Geografia
+            if eleccion == 2:
+                if categorias[2].count("*") > 0:
+                    print("Esta opcion ya no esta disponible".center(100))
+                else:                    
+#                preguntar_geografia(eleccion,matriz)
+                    vacio="*"*len(categorias[eleccion])
+                    categorias[eleccion]=vacio
+                    cont-=1
+
+################################################################################
+                    #espectaculo
+
+            if eleccion == 3:
+                if categorias[3].count("*") > 0:
+                    print("Esta opcion ya no esta disponible".center(100))
+                else:                    
+#                preguntar_espectaculo(eleccion,matriz)
+                    vacio="*"*len(categorias[eleccion])
+                    categorias[eleccion]=vacio
+                    cont-=1
+
+################################################################################
+                    #historia
+
+            if eleccion == 4:
+                if categorias[4].count("*") > 0:
+                    print("Esta opcion ya no esta disponible".center(100))
+                else:                    
+#                preguntar_historia(eleccion,matriz)
+                    vacio="*"*len(categorias[eleccion])
+                    categorias[eleccion]=vacio
+                    cont-=1
+
+
+
+        break
+        
+        
+        
+        
+        
+        
+        
+    except ValueError:
+        print("*** ERROR, Debe ingresarse un numero del 1 al 5 ***".center(100))
+
