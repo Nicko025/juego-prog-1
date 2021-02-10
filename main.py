@@ -10,6 +10,10 @@ def Generar_preguntas(eleccion):
             pregunta=open("Arte.txt","r",encoding="utf-8")
         if eleccion == 2:
             pregunta=open("Geografia.txt","r",encoding="utf-8")
+        if eleccion == 3:
+            pregunta=open("Espectaculo.txt","r",encoding="utf-8")
+        if eleccion == 4:
+            pregunta=open("Historia.txt","r",encoding="utf-8")
             
         inicio=1
         final=3
@@ -97,7 +101,7 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
 
 
 def mostrar_matriz(matriz,puntos,eleccion,pos):#falta que sume los puntos
-    matriz[eleccion][pos]=f"+{puntos}Pts"    
+    matriz[eleccion][pos]=f"+{puntos}"    
     for b in range(len(matriz)):
         print("\n")
         for c in range(len(matriz)):
@@ -191,7 +195,7 @@ while True:
                 if categorias[3].count("*") > 0:
                     print("Esta opcion ya no esta disponible".center(100))
                 else:                    
-#                preguntar_espectaculo(eleccion,matriz)
+                    Generar_preguntas(eleccion)
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
@@ -203,11 +207,11 @@ while True:
                 if categorias[4].count("*") > 0:
                     print("Esta opcion ya no esta disponible".center(100))
                 else:                    
-#                preguntar_historia(eleccion,matriz)
+                    Generar_preguntas(eleccion)
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
-                    
+        break          
     except AssertionError as mensaje:
         print(mensaje,"\n"*2)
         print("**El juego se reinicia**".center(100),"\n")
