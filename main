@@ -2,9 +2,15 @@ import random
 
 #Funciones
 
-def Generar_preguntas_deportes():
+def Generar_preguntas(eleccion):
     try:
-        pregunta=open("Deportes.txt","r",encoding="utf-8")
+        if eleccion == 0:
+            pregunta=open("Deportes.txt","r",encoding="utf-8")
+        if eleccion == 1:
+            pregunta=open("Arte.txt","r",encoding="utf-8")
+        if eleccion == 2:
+            pregunta=open("Geografia.txt","r",encoding="utf-8")
+            
         inicio=1
         final=3
         pos=0
@@ -29,64 +35,6 @@ def Generar_preguntas_deportes():
             pregunta.close()
         except NameError:
             pass
-        
-
-def Generar_preguntas_AyM():
-    try:        
-        pregunta=open("Arte.txt","r",encoding="utf-8")
-        inicio=1
-        final=3
-        pos=0
-        randomizador=random.randint(inicio,final)
-        linea=pregunta.readline()
-        while linea:
-            linea=linea.strip()
-            linea=linea.split(";")
-            if linea[0] == str(randomizador):
-                pos+=1
-                hacer_preguntas(linea,pos)
-                inicio+=3
-                final+=3
-                randomizador=random.randint(inicio,final)
-            linea=pregunta.readline()
-    except FileNotFoundError as mensaje:
-        print("No se puede abrir el archivo:",mensaje)
-    except OSError as mensaje:
-        print("no se pudo leer el archivo",mensaje)
-    finally:
-        try:
-            pregunta.close()
-        except NameError:
-            pass
-
-def Generar_preguntas_Geografia():
-    try:        
-        pregunta=open("Geografia.txt","r",encoding="utf-8")
-        inicio=1
-        final=3
-        pos=0
-        randomizador=random.randint(inicio,final)
-        linea=pregunta.readline()
-        while linea:
-            linea=linea.strip()
-            linea=linea.split(";")
-            if linea[0] == str(randomizador):
-                pos+=1
-                hacer_preguntas(linea,pos)
-                inicio+=3
-                final+=3
-                randomizador=random.randint(inicio,final)
-            linea=pregunta.readline()
-    except FileNotFoundError as mensaje:
-        print("No se puede abrir el archivo:",mensaje)
-    except OSError as mensaje:
-        print("no se pudo leer el archivo",mensaje)
-    finally:
-        try:
-            pregunta.close()
-        except NameError:
-            pass
-
 
 def hacer_preguntas(preguntas_generadas,pos):
     puntos=0
@@ -205,7 +153,7 @@ while True:
                     print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
                     print("*"*100)
                 else:
-                    Generar_preguntas_deportes()
+                    Generar_preguntas(eleccion)
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
@@ -218,7 +166,7 @@ while True:
                     print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
                     print("*"*100)
                 else:
-                    Generar_preguntas_AyM()                
+                    Generar_preguntas(eleccion)                
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
@@ -231,7 +179,7 @@ while True:
                     print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
                     print("*"*100)
                 else:                    
-                    Generar_preguntas_Geografia() 
+                    Generar_preguntas(eleccion) 
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
@@ -264,4 +212,3 @@ while True:
         print(mensaje,"\n"*2)
         print("**El juego se reinicia**".center(100),"\n")
         print(":'(".center(100),"\n"*2)
-        
