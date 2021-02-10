@@ -2,35 +2,109 @@ import random
 
 #Funciones
 
-
-
-def hacer_preguntas(preguntas_generadas):
-    total_preguntas=0
-    pos=0
-    while total_preguntas < 4:
-        randomizador=random.randint(1,12)        
-        for pregunta in range(len(preguntas_generadas)):
-            if str(randomizador) == preguntas_generadas[pregunta][0]:
+def Generar_preguntas_deportes():
+    try:
+        pregunta=open("Deportes.txt","r",encoding="utf-8")
+        inicio=1
+        final=3
+        pos=0
+        randomizador=random.randint(inicio,final)
+        linea=pregunta.readline()
+        while linea:
+            linea=linea.strip()
+            linea=linea.split(";")
+            if linea[0] == str(randomizador):
                 pos+=1
-                pregunta_original = preguntas_generadas[pregunta][1]
-                respuesta_verdadera = preguntas_generadas[pregunta][2]                
-                procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos)              
-                preguntas_generadas[pregunta][0] = ""                
-                total_preguntas+=1
+                hacer_preguntas(linea,pos)
+                inicio+=3
+                final+=3
+                randomizador=random.randint(inicio,final)
+            linea=pregunta.readline()
+    except FileNotFoundError as mensaje:
+        print("No se puede abrir el archivo:",mensaje)
+    except OSError as mensaje:
+        print("no se pudo leer el archivo",mensaje)
+    finally:
+        try:
+            pregunta.close()
+        except NameError:
+            pass
+        
 
+def Generar_preguntas_AyM():
+    try:        
+        pregunta=open("Arte.txt","r",encoding="utf-8")
+        inicio=1
+        final=3
+        pos=0
+        randomizador=random.randint(inicio,final)
+        linea=pregunta.readline()
+        while linea:
+            linea=linea.strip()
+            linea=linea.split(";")
+            if linea[0] == str(randomizador):
+                pos+=1
+                hacer_preguntas(linea,pos)
+                inicio+=3
+                final+=3
+                randomizador=random.randint(inicio,final)
+            linea=pregunta.readline()
+    except FileNotFoundError as mensaje:
+        print("No se puede abrir el archivo:",mensaje)
+    except OSError as mensaje:
+        print("no se pudo leer el archivo",mensaje)
+    finally:
+        try:
+            pregunta.close()
+        except NameError:
+            pass
+
+def Generar_preguntas_Geografia():
+    try:        
+        pregunta=open("Geografia.txt","r",encoding="utf-8")
+        inicio=1
+        final=3
+        pos=0
+        randomizador=random.randint(inicio,final)
+        linea=pregunta.readline()
+        while linea:
+            linea=linea.strip()
+            linea=linea.split(";")
+            if linea[0] == str(randomizador):
+                pos+=1
+                hacer_preguntas(linea,pos)
+                inicio+=3
+                final+=3
+                randomizador=random.randint(inicio,final)
+            linea=pregunta.readline()
+    except FileNotFoundError as mensaje:
+        print("No se puede abrir el archivo:",mensaje)
+    except OSError as mensaje:
+        print("no se pudo leer el archivo",mensaje)
+    finally:
+        try:
+            pregunta.close()
+        except NameError:
+            pass
+
+
+def hacer_preguntas(preguntas_generadas,pos):
+    puntos=0
+    pregunta_original=preguntas_generadas[1]
+    respuesta_verdadera=preguntas_generadas[2]
+    procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos)
 
 def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
-    escondida=""
     pistas_usadas=0
     cont=0
+    escondida=""
     for letra in respuesta_verdadera:
         if letra.isalpha():
             letra=letra.replace(letra,"*")
             escondida=escondida+letra
         else:
             escondida=escondida+letra
-            
-    
+                
     while True:
         print("\n"*4)
         print("*"*100)
@@ -67,11 +141,10 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             print("*"*100)
             puntos=0
             break
-    
+        
     mostrar_matriz(matriz,puntos,eleccion,pos)
     print("\n")    
     input(("*oprima \"ENTER\" para continuar*").center(100))
-    return puntos
 
 
 
@@ -81,52 +154,6 @@ def mostrar_matriz(matriz,puntos,eleccion,pos):#falta que sume los puntos
         print("\n")
         for c in range(len(matriz)):
             print((f"{matriz[b][c]}"), end=" ")
-            
-    
-        
-
-
-
-
-def Generar_preguntas_deportes():    
-#apertura del archivo deporte
-    pregunta=open("deporte.txt","r",encoding="utf-8")
-    linea=pregunta.readline()
-    preguntas_generadas=[]
-    while linea:
-        linea=linea.strip()
-        linea=linea.split(";")
-        preguntas_generadas.append(linea)
-        linea=pregunta.readline()
-    hacer_preguntas(preguntas_generadas)
-    pregunta.close()
-
-def Generar_preguntas_AyM():    
-#apertura del archivo Arte
-    pregunta=open("Arte.txt","r",encoding="utf-8")
-    linea=pregunta.readline()
-    preguntas_generadas=[]
-    while linea:
-        linea=linea.strip()
-        linea=linea.split(";")
-        preguntas_generadas.append(linea)
-        linea=pregunta.readline()
-    hacer_preguntas(preguntas_generadas)
-    pregunta.close()        
-        
-def Generar_preguntas_Geografia():    
-#apertura del archivo Arte
-    pregunta=open("Geografia.txt","r",encoding="utf-8")
-    linea=pregunta.readline()
-    preguntas_generadas=[]
-    while linea:
-        linea=linea.strip()
-        linea=linea.split(";")
-        preguntas_generadas.append(linea)
-        linea=pregunta.readline()
-    hacer_preguntas(preguntas_generadas)
-    pregunta.close() 
-
 
 #Programa Principal
     
@@ -150,14 +177,11 @@ else:
     print("¡A jugar!".center(100),"\n")
     print("*"*100)
 
-    
-
 while True:
     
     categorias=["Deportes","Arte y Musica","Geografia","Espectaculo","Historia"]
     matriz=[[f"{categorias[0]}:","-","-","-","-"],[f"{categorias[1]}:","-","-","-","-"],[f"{categorias[2]}:","-","-","-","-"],[f"{categorias[3]}:","-","-","-","-"],[f"{categorias[4]}:","-","-","-","-"]]
     cont=5
-    orden_fila=0
     puntos=0
     try:
         while cont > 1:
@@ -165,11 +189,15 @@ while True:
             print("*"*100)
             print("*"*3,"1.",categorias[0],"*"*5,"2.",categorias[1],"*"*5,"3.",categorias[2],"*"*5,"4.",categorias[3],"*"*5,"5.",categorias[4],"*"*3)
             print("*"*100)
-            eleccion=int(input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100)))
-            eleccion=eleccion-1
+            eleccion=input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
+            
+            assert eleccion.isdigit(),"**Solo se aceptan los numeros del 1 al 5**".center(100)
+            assert 1 <= int(eleccion) <= 5,"**Solo se aceptan los los numeros del 1 al 5**".center(100)
+            
+            eleccion=int(eleccion)-1
 
 ####################################################################################
-                    #Deportes            
+#Deportes            
             
             if eleccion == 0:
                 if categorias[0].count("*") > 0:
@@ -181,10 +209,9 @@ while True:
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
-                    orden_fila+=1
 
 ####################################################################################
-                    #Arte y Musica
+#Arte y Musica
             if eleccion == 1:
                 if categorias[1].count("*") > 0:
                     print("*"*100)
@@ -195,10 +222,9 @@ while True:
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
-                    orden_fila+=1
                     
 #####################################################################################
-                    #Geografia
+#Geografia
             if eleccion == 2:
                 if categorias[2].count("*") > 0:
                     print("*"*100)
@@ -209,10 +235,9 @@ while True:
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
-                    orden_fila+=1
 
 ################################################################################
-                    #espectaculo
+#espectaculo
 
             if eleccion == 3:
                 if categorias[3].count("*") > 0:
@@ -224,7 +249,7 @@ while True:
                     cont-=1
 
 ################################################################################
-                    #historia
+#historia
 
             if eleccion == 4:
                 if categorias[4].count("*") > 0:
@@ -234,16 +259,9 @@ while True:
                     vacio="*"*len(categorias[eleccion])
                     categorias[eleccion]=vacio
                     cont-=1
-
-
-
-        break
+                    
+    except AssertionError as mensaje:
+        print(mensaje,"\n"*2)
+        print("**El juego se reinicia**".center(100),"\n")
+        print(":'(".center(100),"\n"*2)
         
-        
-        
-        
-        
-        
-        
-    except ValueError:
-        print("*** ERROR, Debe ingresarse un numero del 1 al 5 ***".center(100))
