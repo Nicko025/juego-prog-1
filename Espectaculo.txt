@@ -1,0 +1,12 @@
+1;¿Que obra de Brodway se destacó por utilizar hip hop como banda sonora?;Hamilton
+2;¿Que actriz ganó más premios oscars?;Katherine Hepburn
+3;¿Cúal fue la primera película argentina que ganó un Oscar?;La historia oficial
+4;¿Cómo se llamaba el actor de cine mudo más famoso de la historia?;Charles Chaplin 
+5;¿Que actriz se convirtió en princesa?;Grace Kelly
+6;¿Que director italiano fue exponente del cine de la posguerra?;Federico Fellini
+7;¿Que película es la mas taquillera de la historia?;Avengers
+8;¿Cuál fue la primera película de Disney?;Blanca Nieves
+9;¿Cuál fue la primera película animada en ganar un Oscar?;Shrek 
+10;¿En que ciudad italiana se realiza el Festival de Cine Internacional?;Venecia 
+11;¿Que premio entrega la Academia de Arte y Cine de España?;Goya
+12;¿Que avenida de Buenos Aires es conocida popularmente por su oferta de espectáculos?;Corrientes
