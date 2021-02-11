@@ -4,7 +4,7 @@
 4;¿Cómo se llamaba el actor de cine mudo más famoso de la historia?;Charles Chaplin 
 5;¿Que actriz se convirtió en princesa?;Grace Kelly
 6;¿Que director italiano fue exponente del cine de la posguerra?;Federico Fellini
-7;¿Que película es la mas taquillera de la historia?;Avengers
+7;¿Hasta antes de la llegada de Avengers: Endgame, cual era la pelicula mas taquillera?;Avatar
 8;¿Cuál fue la primera película de Disney?;Blanca Nieves
 9;¿Cuál fue la primera película animada en ganar un Oscar?;Shrek 
 10;¿En que ciudad italiana se realiza el Festival de Cine Internacional?;Venecia 
