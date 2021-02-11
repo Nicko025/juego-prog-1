@@ -46,6 +46,7 @@ def hacer_preguntas(preguntas_generadas,pos):
     respuesta_verdadera=preguntas_generadas[2]
     procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos)
 
+
 def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     pistas_usadas=0
     cont=0
@@ -95,17 +96,33 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             break
         
     mostrar_matriz(matriz,puntos,eleccion,pos)
-    print("\n")    
+    
+
+    
+    print("\n")
+    print(f"*Los puntos totales son: {sumar_matriz(matriz,cont=0,suma=0)}*".center(100))
     input(("*oprima \"ENTER\" para continuar*").center(100))
+    
+    
 
 
 
-def mostrar_matriz(matriz,puntos,eleccion,pos):#falta que sume los puntos
-    matriz[eleccion][pos]=f"+{puntos}"    
+def mostrar_matriz(matriz,puntos,eleccion,pos):
+    matriz[eleccion][pos]=puntos
     for b in range(len(matriz)):
         print("\n")
         for c in range(len(matriz)):
-            print((f"{matriz[b][c]}"), end=" ")
+            print((f"{matriz[b][c]}"), end=" ")   
+
+def sumar_matriz(matriz,cont=0,suma=0):
+    columna=len(matriz)
+    if cont < columna:        
+        suma=suma+sum(matriz[cont][1:])            
+        return sumar_matriz(matriz,cont+1,suma)
+    else:
+        return suma   
+
+
 
 #Programa Principal
     
@@ -132,9 +149,10 @@ else:
 while True:
     
     categorias=["Deportes","Arte y Musica","Geografia","Espectaculo","Historia"]
-    matriz=[[f"{categorias[0]}:","-","-","-","-"],[f"{categorias[1]}:","-","-","-","-"],[f"{categorias[2]}:","-","-","-","-"],[f"{categorias[3]}:","-","-","-","-"],[f"{categorias[4]}:","-","-","-","-"]]
+    matriz=[[f"{categorias[0]}:",0,0,0,0],[f"{categorias[1]}:",0,0,0,0],[f"{categorias[2]}:",0,0,0,0],[f"{categorias[3]}:",0,0,0,0],[f"{categorias[4]}:",0,0,0,0]]
     cont=5
     puntos=0
+    sumapuntos=0
     try:
         while cont > 1:
             print(" Las categorias disponibles son ".center(100,"*"))            
