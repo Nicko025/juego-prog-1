@@ -53,7 +53,7 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     escondida=""
     for letra in respuesta_verdadera:
         if letra.isalpha():
-            letra=letra.replace(letra,"*")
+            letra=letra.replace(letra,"?")
             escondida=escondida+letra
         else:
             escondida=escondida+letra
