@@ -96,14 +96,8 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             break
         
     mostrar_matriz(matriz,puntos,eleccion,pos)
-    filas_totales=0
-    while filas_totales < len(matriz):
-        sumar_matriz(matriz,filas_totales)
-        filas_totales +=1
-
-    
     print("\n")
-    print(f"*Los puntos totales son: {sumar_matriz(matriz,eleccion,cont=0,suma=0)}*".center(100))
+    print(f"*Los puntos totales son: {sumar_matriz(matriz)}*".center(100))
     input(("*oprima \"ENTER\" para continuar*").center(100))
     
     
@@ -117,27 +111,48 @@ def mostrar_matriz(matriz,puntos,eleccion,pos):
         for c in range(len(matriz)):
             print((f"{matriz[b][c]}"), end=" ")   
 
-def sumar_matriz(matriz,filas_totales,cont=1,suma=0):
-    fila=len(matriz)
-    if cont < fila:
+def sumar_matriz(matriz,suma=0,fila=0,columna=0):
+    longitud=len(matriz)
+    if columna < longitud:
         try:
-            suma=suma+matriz[filas_totales][cont]
+            suma=suma+matriz[fila][columna]
         except TypeError:
             pass
-        return sumar_matriz(matriz,filas_totales,cont+1,suma)
+        return sumar_matriz(matriz,suma,fila,columna+1)
+    if columna == longitud and fila < longitud-1:
+#        print(fila,columna)
+        return sumar_matriz(matriz,suma,fila+1,columna=0)
     else:
         return suma   
 
-def filtrar_eleccion():
+def filtrar_eleccion(categorias):
     try:
         opcion=input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
         assert opcion.isdigit(),"**Solo se aceptan los numeros del 1 al 5**".center(100)
         assert 1 <= int(opcion) <= 5,"**Solo se aceptan los los numeros del 1 al 5**".center(100)
     except AssertionError as mensaje:
-            print(mensaje,"\n"*2)
+            print(mensaje,"\n")
             print(":'(".center(100),"\n"*2)
-            return filtrar_eleccion()
+            print("*"*100)
+            print("*"*3,"1.",categorias[0],"*"*5,"2.",categorias[1],"*"*5,"3.",categorias[2],"*"*5,"4.",categorias[3],"*"*5,"5.",categorias[4],"*"*3)
+            print("*"*100)
+            return filtrar_eleccion(categorias)
     return opcion
+
+def verificar_ultima_opcion():
+    try:
+        print(("*"*90).center(100))
+        print((f"* 1) Ingrese \"RESET\" para volver a empezar.  |  2) Presione \"ENTER\" para cerrar el juego *").center(100))
+        print(("*"*90).center(100))
+        ultima_opcion=input("\n".center(100))
+        ultima_opcion=ultima_opcion.lower()
+        assert ultima_opcion == "reset" or ultima_opcion == "","**Solo se acepta RESET o ENTER**".center(100)
+    except AssertionError as mensaje:
+        print(mensaje,"\n")
+        return verificar_ultima_opcion()
+    return ultima_opcion
+
+
 
 #Programa Principal
     
@@ -173,7 +188,7 @@ while True:
         print("*"*100)
         print("*"*3,"1.",categorias[0],"*"*5,"2.",categorias[1],"*"*5,"3.",categorias[2],"*"*5,"4.",categorias[3],"*"*5,"5.",categorias[4],"*"*3)
         print("*"*100)
-        eleccion=filtrar_eleccion()       
+        eleccion=filtrar_eleccion(categorias)       
         eleccion=int(eleccion)-1
 
 ####################################################################################
@@ -185,7 +200,7 @@ while True:
                 print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
                 print("*"*100)
             else:
-                Generar_preguntas(eleccion)
+                sumapuntos=Generar_preguntas(eleccion)
                 vacio="*"*len(categorias[eleccion])
                 categorias[eleccion]=vacio
                 cont-=1
@@ -198,7 +213,7 @@ while True:
                 print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
                 print("*"*100)
             else:
-                Generar_preguntas(eleccion)                
+                sumapuntos=Generar_preguntas(eleccion)                
                 vacio="*"*len(categorias[eleccion])
                 categorias[eleccion]=vacio
                 cont-=1
@@ -211,7 +226,7 @@ while True:
                 print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
                 print("*"*100)
             else:                    
-                Generar_preguntas(eleccion) 
+                sumapuntos=Generar_preguntas(eleccion) 
                 vacio="*"*len(categorias[eleccion])
                 categorias[eleccion]=vacio
                 cont-=1
@@ -223,7 +238,7 @@ while True:
             if categorias[3].count("*") > 0:
                 print("Esta opcion ya no esta disponible".center(100))
             else:                    
-                Generar_preguntas(eleccion)
+                sumapuntos=Generar_preguntas(eleccion)
                 vacio="*"*len(categorias[eleccion])
                 categorias[eleccion]=vacio
                 cont-=1
@@ -235,8 +250,23 @@ while True:
             if categorias[4].count("*") > 0:
                 print("Esta opcion ya no esta disponible".center(100))
             else:                    
-                Generar_preguntas(eleccion)
+                sumapuntos=Generar_preguntas(eleccion)
                 vacio="*"*len(categorias[eleccion])
                 categorias[eleccion]=vacio
                 cont-=1
-    break
+                
+    print(f"\n"*10)
+    print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
+    print(f"**Felicidades, usted hizo: {sumar_matriz(matriz)} de 200 puntos**".center(100))
+    print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
+    print("\n")
+    ultima_opcion=verificar_ultima_opcion()
+        
+    if ultima_opcion == "reset":
+        continue
+    else:
+        break
+    
+print(("*"*90).center(100))
+print((f"MUCHAS GRACIAS POR JUGAR!!! :)").center(100," "))
+print(("*"*90).center(100))
