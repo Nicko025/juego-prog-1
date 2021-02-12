@@ -49,7 +49,7 @@ def hacer_preguntas(preguntas_generadas,pos):
 
 def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     pistas_usadas=0
-    cont=0
+    cont2=0
     escondida=""
     for letra in respuesta_verdadera:
         if letra.isalpha():
@@ -72,9 +72,9 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(escondida):
             escondida=list(escondida)
             pistas_usadas+=1
-            escondida[cont]=respuesta_verdadera[cont]
+            escondida[cont2]=respuesta_verdadera[cont2]
             escondida="".join(escondida)
-            cont+=1
+            cont2+=1
             if pistas_usadas > 10:
                 pistas_usadas = 10
 
@@ -96,11 +96,14 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             break
         
     mostrar_matriz(matriz,puntos,eleccion,pos)
-    
+    filas_totales=0
+    while filas_totales < len(matriz):
+        sumar_matriz(matriz,filas_totales)
+        filas_totales +=1
 
     
     print("\n")
-    print(f"*Los puntos totales son: {sumar_matriz(matriz,cont=0,suma=0)}*".center(100))
+    print(f"*Los puntos totales son: {sumar_matriz(matriz,eleccion,cont=0,suma=0)}*".center(100))
     input(("*oprima \"ENTER\" para continuar*").center(100))
     
     
@@ -114,15 +117,27 @@ def mostrar_matriz(matriz,puntos,eleccion,pos):
         for c in range(len(matriz)):
             print((f"{matriz[b][c]}"), end=" ")   
 
-def sumar_matriz(matriz,cont=0,suma=0):
-    columna=len(matriz)
-    if cont < columna:        
-        suma=suma+sum(matriz[cont][1:])            
-        return sumar_matriz(matriz,cont+1,suma)
+def sumar_matriz(matriz,filas_totales,cont=1,suma=0):
+    fila=len(matriz)
+    if cont < fila:
+        try:
+            suma=suma+matriz[filas_totales][cont]
+        except TypeError:
+            pass
+        return sumar_matriz(matriz,filas_totales,cont+1,suma)
     else:
         return suma   
 
-
+def filtrar_eleccion():
+    try:
+        opcion=input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
+        assert opcion.isdigit(),"**Solo se aceptan los numeros del 1 al 5**".center(100)
+        assert 1 <= int(opcion) <= 5,"**Solo se aceptan los los numeros del 1 al 5**".center(100)
+    except AssertionError as mensaje:
+            print(mensaje,"\n"*2)
+            print(":'(".center(100),"\n"*2)
+            return filtrar_eleccion()
+    return opcion
 
 #Programa Principal
     
@@ -149,88 +164,79 @@ else:
 while True:
     
     categorias=["Deportes","Arte y Musica","Geografia","Espectaculo","Historia"]
-    matriz=[[f"{categorias[0]}:",0,0,0,0],[f"{categorias[1]}:",0,0,0,0],[f"{categorias[2]}:",0,0,0,0],[f"{categorias[3]}:",0,0,0,0],[f"{categorias[4]}:",0,0,0,0]]
+    matriz=[[f"{categorias[0]}:","-","-","-","-"],[f"{categorias[1]}:","-","-","-","-"],[f"{categorias[2]}:","-","-","-","-"],[f"{categorias[3]}:","-","-","-","-"],[f"{categorias[4]}:","-","-","-","-"]]
     cont=5
     puntos=0
     sumapuntos=0
-    try:
-        while cont > 1:
-            print(" Las categorias disponibles son ".center(100,"*"))            
-            print("*"*100)
-            print("*"*3,"1.",categorias[0],"*"*5,"2.",categorias[1],"*"*5,"3.",categorias[2],"*"*5,"4.",categorias[3],"*"*5,"5.",categorias[4],"*"*3)
-            print("*"*100)
-            eleccion=input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
-            
-            assert eleccion.isdigit(),"**Solo se aceptan los numeros del 1 al 5**".center(100)
-            assert 1 <= int(eleccion) <= 5,"**Solo se aceptan los los numeros del 1 al 5**".center(100)
-            
-            eleccion=int(eleccion)-1
+    while cont > 0:
+        print(" Las categorias disponibles son ".center(100,"*"))            
+        print("*"*100)
+        print("*"*3,"1.",categorias[0],"*"*5,"2.",categorias[1],"*"*5,"3.",categorias[2],"*"*5,"4.",categorias[3],"*"*5,"5.",categorias[4],"*"*3)
+        print("*"*100)
+        eleccion=filtrar_eleccion()       
+        eleccion=int(eleccion)-1
 
 ####################################################################################
 #Deportes            
             
-            if eleccion == 0:
-                if categorias[0].count("*") > 0:
-                    print("*"*100)
-                    print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
-                    print("*"*100)
-                else:
-                    Generar_preguntas(eleccion)
-                    vacio="*"*len(categorias[eleccion])
-                    categorias[eleccion]=vacio
-                    cont-=1
+        if eleccion == 0:
+            if categorias[0].count("*") > 0:
+                print("*"*100)
+                print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+                print("*"*100)
+            else:
+                Generar_preguntas(eleccion)
+                vacio="*"*len(categorias[eleccion])
+                categorias[eleccion]=vacio
+                cont-=1
 
 ####################################################################################
 #Arte y Musica
-            if eleccion == 1:
-                if categorias[1].count("*") > 0:
-                    print("*"*100)
-                    print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
-                    print("*"*100)
-                else:
-                    Generar_preguntas(eleccion)                
-                    vacio="*"*len(categorias[eleccion])
-                    categorias[eleccion]=vacio
-                    cont-=1
+        if eleccion == 1:
+            if categorias[1].count("*") > 0:
+                print("*"*100)
+                print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+                print("*"*100)
+            else:
+                Generar_preguntas(eleccion)                
+                vacio="*"*len(categorias[eleccion])
+                categorias[eleccion]=vacio
+                cont-=1
                     
 #####################################################################################
 #Geografia
-            if eleccion == 2:
-                if categorias[2].count("*") > 0:
-                    print("*"*100)
-                    print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
-                    print("*"*100)
-                else:                    
-                    Generar_preguntas(eleccion) 
-                    vacio="*"*len(categorias[eleccion])
-                    categorias[eleccion]=vacio
-                    cont-=1
+        if eleccion == 2:
+            if categorias[2].count("*") > 0:
+                print("*"*100)
+                print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+                print("*"*100)
+            else:                    
+                Generar_preguntas(eleccion) 
+                vacio="*"*len(categorias[eleccion])
+                categorias[eleccion]=vacio
+                cont-=1
 
 ################################################################################
 #espectaculo
 
-            if eleccion == 3:
-                if categorias[3].count("*") > 0:
-                    print("Esta opcion ya no esta disponible".center(100))
-                else:                    
-                    Generar_preguntas(eleccion)
-                    vacio="*"*len(categorias[eleccion])
-                    categorias[eleccion]=vacio
-                    cont-=1
+        if eleccion == 3:
+            if categorias[3].count("*") > 0:
+                print("Esta opcion ya no esta disponible".center(100))
+            else:                    
+                Generar_preguntas(eleccion)
+                vacio="*"*len(categorias[eleccion])
+                categorias[eleccion]=vacio
+                cont-=1
 
 ################################################################################
 #historia
 
-            if eleccion == 4:
-                if categorias[4].count("*") > 0:
-                    print("Esta opcion ya no esta disponible".center(100))
-                else:                    
-                    Generar_preguntas(eleccion)
-                    vacio="*"*len(categorias[eleccion])
-                    categorias[eleccion]=vacio
-                    cont-=1
-        break          
-    except AssertionError as mensaje:
-        print(mensaje,"\n"*2)
-        print("**El juego se reinicia**".center(100),"\n")
-        print(":'(".center(100),"\n"*2)
+        if eleccion == 4:
+            if categorias[4].count("*") > 0:
+                print("Esta opcion ya no esta disponible".center(100))
+            else:                    
+                Generar_preguntas(eleccion)
+                vacio="*"*len(categorias[eleccion])
+                categorias[eleccion]=vacio
+                cont-=1
+    break
