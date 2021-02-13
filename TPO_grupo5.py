@@ -3,6 +3,7 @@ import random
 #Funciones
 
 def Generar_preguntas(eleccion):
+    
     try:
         if eleccion == 0:
             pregunta=open("Deportes.txt","r",encoding="utf-8")
@@ -48,6 +49,7 @@ def hacer_preguntas(preguntas_generadas,pos):
 
 
 def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
+    
     pistas_usadas=0
     cont2=0
     escondida=""
@@ -95,23 +97,31 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             puntos=0
             break
         
-    mostrar_matriz(matriz,puntos,eleccion,pos)
+    mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera)
+    generar_diccionario(diccionario,matriz,eleccion,pos,respuesta_verdadera,tupla)
     print("\n")
     print(f"*Los puntos totales son: {sumar_matriz(matriz)}*".center(100))
     input(("*oprima \"ENTER\" para continuar*").center(100))
-    
-    
 
-
-
-def mostrar_matriz(matriz,puntos,eleccion,pos):
+def mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera):    
     matriz[eleccion][pos]=puntos
     for b in range(len(matriz)):
         print("\n")
         for c in range(len(matriz)):
-            print((f"{matriz[b][c]}"), end=" ")   
+            print((f"{matriz[b][c]}"), end=" ")
+            
+def generar_diccionario(diccionario,matriz,eleccion,pos,respuesta_verdadera,tupla):
+    tupla=tupla+(f"{matriz[eleccion][pos]} | {respuesta_verdadera}",)
+#    diccionario.add(f"({matriz[eleccion][pos]} | {respuesta_verdadera})")
+    diccionario[f"{matriz[eleccion][0]} (Pts | Respuesta)"]=tupla
+    print("\n",diccionario)
+    #([f"({matriz[eleccion][pos]} | {respuesta_verdadera})"])
+
+    
+
 
 def sumar_matriz(matriz,suma=0,fila=0,columna=0):
+    
     longitud=len(matriz)
     if columna < longitud:
         try:
@@ -126,6 +136,7 @@ def sumar_matriz(matriz,suma=0,fila=0,columna=0):
         return suma   
 
 def filtrar_eleccion(categorias):
+    
     try:
         opcion=input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
         assert opcion.isdigit(),"**Solo se aceptan los numeros del 1 al 5**".center(100)
@@ -140,6 +151,7 @@ def filtrar_eleccion(categorias):
     return opcion
 
 def verificar_ultima_opcion():
+    
     try:
         print(("*"*90).center(100))
         print((f"* 1) Ingrese \"RESET\" para volver a empezar.  |  2) Presione \"ENTER\" para cerrar el juego *").center(100))
@@ -151,8 +163,6 @@ def verificar_ultima_opcion():
         print(mensaje,"\n")
         return verificar_ultima_opcion()
     return ultima_opcion
-
-
 
 #Programa Principal
     
@@ -180,6 +190,8 @@ while True:
     
     categorias=["Deportes","Arte y Musica","Geografia","Espectaculo","Historia"]
     matriz=[[f"{categorias[0]}:","-","-","-","-"],[f"{categorias[1]}:","-","-","-","-"],[f"{categorias[2]}:","-","-","-","-"],[f"{categorias[3]}:","-","-","-","-"],[f"{categorias[4]}:","-","-","-","-"]]
+    tupla=()
+    diccionario={}
     cont=5
     puntos=0
     sumapuntos=0
@@ -191,75 +203,24 @@ while True:
         eleccion=filtrar_eleccion(categorias)       
         eleccion=int(eleccion)-1
 
-####################################################################################
-#Deportes            
-            
-        if eleccion == 0:
-            if categorias[0].count("*") > 0:
-                print("*"*100)
-                print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
-                print("*"*100)
-            else:
-                sumapuntos=Generar_preguntas(eleccion)
-                vacio="*"*len(categorias[eleccion])
-                categorias[eleccion]=vacio
-                cont-=1
-
-####################################################################################
-#Arte y Musica
-        if eleccion == 1:
-            if categorias[1].count("*") > 0:
-                print("*"*100)
-                print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
-                print("*"*100)
-            else:
-                sumapuntos=Generar_preguntas(eleccion)                
-                vacio="*"*len(categorias[eleccion])
-                categorias[eleccion]=vacio
-                cont-=1
-                    
-#####################################################################################
-#Geografia
-        if eleccion == 2:
-            if categorias[2].count("*") > 0:
-                print("*"*100)
-                print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
-                print("*"*100)
-            else:                    
-                sumapuntos=Generar_preguntas(eleccion) 
-                vacio="*"*len(categorias[eleccion])
-                categorias[eleccion]=vacio
-                cont-=1
-
-################################################################################
-#espectaculo
-
-        if eleccion == 3:
-            if categorias[3].count("*") > 0:
-                print("Esta opcion ya no esta disponible".center(100))
-            else:                    
-                sumapuntos=Generar_preguntas(eleccion)
-                vacio="*"*len(categorias[eleccion])
-                categorias[eleccion]=vacio
-                cont-=1
-
-################################################################################
-#historia
-
-        if eleccion == 4:
-            if categorias[4].count("*") > 0:
-                print("Esta opcion ya no esta disponible".center(100))
-            else:                    
-                sumapuntos=Generar_preguntas(eleccion)
-                vacio="*"*len(categorias[eleccion])
-                categorias[eleccion]=vacio
-                cont-=1
+        if categorias[eleccion].count("*") > 0:
+            print("*"*100)
+            print("*","Esta opcion ya no esta disponible".center(96),"*".rjust(0))
+            print("*"*100)
+        else:
+            sumapuntos=Generar_preguntas(eleccion)
+            vacio="*"*len(categorias[eleccion])
+            categorias[eleccion]=vacio
+            cont-=1
                 
     print(f"\n"*10)
     print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
     print(f"**Felicidades, usted hizo: {sumar_matriz(matriz)} de 200 puntos**".center(100))
     print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
-    print("\n")
+#    for cat in diccionario:
+#        print(cat)#,diccionario[cat])
+#    print(diccionario)
+    
     ultima_opcion=verificar_ultima_opcion()
         
     if ultima_opcion == "reset":
