@@ -55,9 +55,10 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     escondida=""
     for letra in respuesta_verdadera:
         if letra.isalpha():
-            letra=letra.replace(letra,"?")
+            letra=letra.replace(letra,"_ ")
             escondida=escondida+letra
         else:
+            letra=letra.replace(letra,"- ")
             escondida=escondida+letra
                 
     while True:
@@ -67,14 +68,23 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         print("*"*100)
         print("*",pregunta_original.center(96),"*".rjust(0))
         print("*"*100)
-        print("*escriba \"PISTA\" para revelar una letra*".center(100," "))
+        elim_espacios=respuesta_verdadera.strip(" ")
+        print("*Recuerde introducir el espacio entre cada palabra".center(100," "))
+        print(f"*La palabra cuenta con \"{len(elim_espacios)}\" letras*".center(100," "))
+        if pistas_usadas < len(escondida) and cont2 < len(respuesta_verdadera):
+            print("*Escriba \"PISTA\" para revelar una letra*".center(100," "))
+        
         respuesta_del_jugador=input(f"{escondida} (+{10 - pistas_usadas}Pts):")
         
         
-        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(escondida):
+        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(escondida) and cont2 < len(respuesta_verdadera):
             escondida=list(escondida)
             pistas_usadas+=1
-            escondida[cont2]=respuesta_verdadera[cont2]
+            pos_letra=escondida.index("_")
+            if respuesta_verdadera[cont2] == " ":
+                cont2+=1
+            print(escondida[pos_letra],respuesta_verdadera[cont2])            
+            escondida[pos_letra]=respuesta_verdadera[cont2]
             escondida="".join(escondida)
             cont2+=1
             if pistas_usadas > 10:
