@@ -26,7 +26,7 @@ def Generar_preguntas(eleccion):
             linea=linea.split(";")
             if linea[0] == str(randomizador):
                 pos+=1
-                hacer_preguntas(linea,pos)
+                hacer_preguntas(linea,pos,respuestas_totales)
                 inicio+=3
                 final+=3
                 randomizador=random.randint(inicio,final)
@@ -41,11 +41,12 @@ def Generar_preguntas(eleccion):
         except NameError:
             pass
 
-def hacer_preguntas(preguntas_generadas,pos):
+def hacer_preguntas(preguntas_generadas,pos,respuestas_totales):
     puntos=0
     pregunta_original=preguntas_generadas[1]
     respuesta_verdadera=preguntas_generadas[2]
     procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos)
+    respuestas_totales.append(respuesta_verdadera)
 
 
 def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
@@ -53,6 +54,7 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     pistas_usadas=0
     cont2=0
     escondida=""
+    tupla=()
     for letra in respuesta_verdadera:
         if letra.isalpha():
             letra=letra.replace(letra,"_ ")
@@ -68,11 +70,13 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         print("*"*100)
         print("*",pregunta_original.center(96),"*".rjust(0))
         print("*"*100)
+        print("\n"*2)
         print("*Recuerde introducir el espacio entre cada palabra".center(100," "))
         espacios=respuesta_verdadera.count(" ")
         print(f"*La palabra cuenta con \"{(len(respuesta_verdadera)-espacios)}\" letras*".center(100," "))
         if pistas_usadas < len(escondida) and cont2 < len(respuesta_verdadera):
             print("*Escriba \"PISTA\" para revelar una letra*".center(100," "))
+        print("\n"*2)
         
         respuesta_del_jugador=input(f"{escondida} (+{10 - pistas_usadas}Pts):")
         
@@ -108,7 +112,6 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             break
         
     mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera)
-    generar_diccionario(diccionario,matriz,eleccion,pos,respuesta_verdadera,tupla)
     print("\n")
     print(f"*Los puntos totales son: {sumar_matriz(matriz)}*".center(100))
     input(("*oprima \"ENTER\" para continuar*").center(100))
@@ -120,12 +123,24 @@ def mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera):
         for c in range(len(matriz)):
             print((f"{matriz[b][c]}"), end=" ")
             
-def generar_diccionario(diccionario,matriz,eleccion,pos,respuesta_verdadera,tupla):
-    tupla=tupla+(f"{matriz[eleccion][pos]} | {respuesta_verdadera}",)
-#    diccionario.add(f"({matriz[eleccion][pos]} | {respuesta_verdadera})")
-    diccionario[f"{matriz[eleccion][0]} (Pts | Respuesta)"]=tupla
-    print("\n",diccionario)
-    #([f"({matriz[eleccion][pos]} | {respuesta_verdadera})"])
+def generar_diccionario(respuestas_totales,matriz,diccionario={}):
+    puntos_totales=[]
+    for a in range(len(matriz)):
+        puntos_totales=puntos_totales+matriz[a][1:]
+    
+    largo = len(puntos_totales)
+    for a in range(1,largo*2,2):
+        respuestas_totales[a:a] = [puntos_totales[a//2]]
+    
+    respuestas_totales=tuple(respuestas_totales)    
+    ini=0
+    fin=7
+    for a in range(len(matriz)):
+        diccionario[matriz[a][0]]=respuestas_totales[ini:fin]
+        ini+=8
+        fin+=8
+    
+    return diccionario
 
     
 
@@ -200,8 +215,7 @@ while True:
     
     categorias=["Deportes","Arte y Musica","Geografia","Espectaculo","Historia"]
     matriz=[[f"{categorias[0]}:","-","-","-","-"],[f"{categorias[1]}:","-","-","-","-"],[f"{categorias[2]}:","-","-","-","-"],[f"{categorias[3]}:","-","-","-","-"],[f"{categorias[4]}:","-","-","-","-"]]
-    tupla=()
-    diccionario={}
+    respuestas_totales=[]
     cont=5
     puntos=0
     sumapuntos=0
@@ -227,10 +241,14 @@ while True:
     print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
     print(f"**Felicidades, usted hizo: {sumar_matriz(matriz)} de 200 puntos**".center(100))
     print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
-#    for cat in diccionario:
-#        print(cat)#,diccionario[cat])
-#    print(diccionario)
-    
+    print("\n")
+    print("*Sus respuestas*".center(100))
+    print("\n")
+    diccionario=generar_diccionario(respuestas_totales,matriz)
+    for categorias in diccionario:
+        categorias=categorias.rstrip()
+        print(f"{categorias},{diccionario[categorias]}".center(100))
+    print("\n")
     ultima_opcion=verificar_ultima_opcion()
         
     if ultima_opcion == "reset":
