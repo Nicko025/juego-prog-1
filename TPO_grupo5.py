@@ -68,9 +68,9 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         print("*"*100)
         print("*",pregunta_original.center(96),"*".rjust(0))
         print("*"*100)
-        elim_espacios=respuesta_verdadera.strip(" ")
         print("*Recuerde introducir el espacio entre cada palabra".center(100," "))
-        print(f"*La palabra cuenta con \"{len(elim_espacios)}\" letras*".center(100," "))
+        espacios=respuesta_verdadera.count(" ")
+        print(f"*La palabra cuenta con \"{(len(respuesta_verdadera)-espacios)}\" letras*".center(100," "))
         if pistas_usadas < len(escondida) and cont2 < len(respuesta_verdadera):
             print("*Escriba \"PISTA\" para revelar una letra*".center(100," "))
         
