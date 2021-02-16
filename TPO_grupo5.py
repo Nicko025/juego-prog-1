@@ -54,7 +54,6 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     pistas_usadas=0
     cont2=0
     escondida=""
-    tupla=()
     for letra in respuesta_verdadera:
         if letra.isalpha():
             letra=letra.replace(letra,"_ ")
@@ -141,7 +140,7 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     input(("*oprima \"ENTER\" para continuar*").center(100))
 
 def mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera):    
-    matriz[eleccion][pos]=puntos
+    matriz[eleccion][pos]=f"{puntos} Pts"
     for b in range(len(matriz)):
         print("\n")
         for c in range(len(matriz)):
@@ -158,7 +157,7 @@ def generar_diccionario(respuestas_totales,matriz,diccionario={}):
     
     respuestas_totales=tuple(respuestas_totales)    
     ini=0
-    fin=7
+    fin=8
     for a in range(len(matriz)):
         diccionario[matriz[a][0]]=respuestas_totales[ini:fin]
         ini+=8
@@ -174,8 +173,10 @@ def sumar_matriz(matriz,suma=0,fila=0,columna=0):
     longitud=len(matriz)
     if columna < longitud:
         try:
-            suma=suma+matriz[fila][columna]
-        except TypeError:
+            num=matriz[fila][columna].split(" ")
+            num.remove("Pts")
+            suma=suma+int(num[0])#matriz[fila][columna]
+        except TypeError and ValueError:
             pass
         return sumar_matriz(matriz,suma,fila,columna+1)
     if columna == longitud and fila < longitud-1:
@@ -243,7 +244,6 @@ while True:
     respuestas_totales=[]
     cont=5
     puntos=0
-    sumapuntos=0
     while cont > 0:
         print(" Las categorias disponibles son ".center(100,"*"))            
         print("*"*100)
