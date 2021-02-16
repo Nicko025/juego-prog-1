@@ -62,7 +62,28 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         else:
             letra=letra.replace(letra,"- ")
             escondida=escondida+letra
-                
+            
+    if eleccion==0:
+        print ("\n")
+        print ("Excelente!, Tendremos un sportfreak en el teclado?.".center(100," "))
+
+    if eleccion==1:
+        print ("\n")
+        print ("Muy buena eleccion!, veamos cuanto sabes de Arte y Musica".center(100," "))
+
+    if eleccion==2:
+        print ("\n")
+        print ("Audaz!, veamos cuanto sabes de nuestro planeta".center(100," "))
+
+    if eleccion==3:
+        print ("\n")
+        print ("El mundo del espectaculo es tan amplio como el resto de las categorias.".center(100," "))
+        print ("Veamos cuanto sabes...  el que avisa no traiciona".center(100," "))
+        
+    if eleccion==4:
+        print ("\n")
+        print ("Historia... Veamos si realmente sos un Memorioso".center(100," "))
+                    
     while True:
         print("\n"*4)
         print("*"*100)
@@ -70,24 +91,27 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         print("*"*100)
         print("*",pregunta_original.center(96),"*".rjust(0))
         print("*"*100)
-        print("\n"*2)
+        print ("\n")
         print("*Recuerde introducir el espacio entre cada palabra".center(100," "))
         espacios=respuesta_verdadera.count(" ")
         print(f"*La palabra cuenta con \"{(len(respuesta_verdadera)-espacios)}\" letras*".center(100," "))
-        if pistas_usadas < len(escondida) and cont2 < len(respuesta_verdadera):
+        if pistas_usadas < len(respuesta_verdadera)-espacios and cont2 < len(respuesta_verdadera)-espacios:
             print("*Escriba \"PISTA\" para revelar una letra*".center(100," "))
-        print("\n"*2)
+            print ("\n")
+            respuesta_del_jugador=input(f"La respuesta es: {escondida}""\n"f"Si respondes correctamente sumas {10 - pistas_usadas}Pts!: ")
+        elif pistas_usadas == len(respuesta_verdadera)-espacios and cont2 == len(respuesta_verdadera)-espacios:
+            print ("\n")
+            print ("Ya deberias saber la respuesta")
+            print (f"La respuesta es: {escondida}""\n""Lamentablemente no sumas puntos, esperamos que esta respuesta se guarde en tu memoria")
+            break
         
-        respuesta_del_jugador=input(f"{escondida} (+{10 - pistas_usadas}Pts):")
         
-        
-        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(escondida) and cont2 < len(respuesta_verdadera):
+        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(respuesta_verdadera)-espacios and cont2 < len(respuesta_verdadera)-espacios:
             escondida=list(escondida)
             pistas_usadas+=1
             pos_letra=escondida.index("_")
             if respuesta_verdadera[cont2] == " ":
-                cont2+=1
-            print(escondida[pos_letra],respuesta_verdadera[cont2])            
+                cont2+=1     
             escondida[pos_letra]=respuesta_verdadera[cont2]
             escondida="".join(escondida)
             cont2+=1
@@ -163,7 +187,8 @@ def sumar_matriz(matriz,suma=0,fila=0,columna=0):
 def filtrar_eleccion(categorias):
     
     try:
-        opcion=input(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
+        print(f"* Ingrese la categoria del 1 al 5 y luego aprete ENTER * \n".center(100))
+        opcion=input(f"La categoría es:".ljust(18))
         assert opcion.isdigit(),"**Solo se aceptan los numeros del 1 al 5**".center(100)
         assert 1 <= int(opcion) <= 5,"**Solo se aceptan los los numeros del 1 al 5**".center(100)
     except AssertionError as mensaje:
