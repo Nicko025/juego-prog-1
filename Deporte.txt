@@ -7,6 +7,6 @@
 7;¿Quién ganó el mundial de fútbol de 2002 (Corea/Japon)?;Brasil
 8;¿Como se llama la competencia que incluye ciclismo, natacion y running en un mismo evento?;Triatlon
 9;¿Cómo se llama el lugar donde se realizan las carreras de caballos?;Hipodromo
-10;¿A qué deporte pertenece el córner corto?;hockey
+10;¿A qué deporte pertenece el córner corto?;Hockey
 11;¿Cómo se llamaba la pelota del Mundial de fútbol en 1978 en Argentina?;Tango
-12;¿Cual es el deporte nacional de Inglaterra?;criquet
+12;¿Cual es el deporte nacional de Inglaterra?;Criquet
