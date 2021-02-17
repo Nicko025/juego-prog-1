@@ -133,7 +133,8 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             print("*"*100)
             puntos=0
             break
-        
+    print()
+    print("Su progreso es:")    
     mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera)
     print("\n")
     print(f"*Los puntos totales son: {sumar_matriz(matriz)}*".center(100))
