@@ -7,14 +7,24 @@ def Generar_preguntas(eleccion):
     try:
         if eleccion == 0:
             pregunta=open("Deportes.txt","r",encoding="utf-8")
+            print ("\n"*10)
+            print ("Excelente!, Tendremos un sportfreak en el teclado?.".center(100," "))
         if eleccion == 1:
             pregunta=open("Arte.txt","r",encoding="utf-8")
+            print ("\n"*10)
+            print ("Muy buena eleccion!, veamos cuanto sabes de Arte y Musica".center(100," "))
         if eleccion == 2:
             pregunta=open("Geografia.txt","r",encoding="utf-8")
+            print ("\n"*10)
+            print ("Audaz!, veamos cuanto sabes de nuestro planeta".center(100," "))
         if eleccion == 3:
             pregunta=open("Espectaculo.txt","r",encoding="utf-8")
+            print ("\n"*10)
+            print ("El mundo del espectaculo es tan amplio como el resto de las categorias.".center(100," "))
         if eleccion == 4:
             pregunta=open("Historia.txt","r",encoding="utf-8")
+            print ("\n"*10)
+            print ("Historia... Veamos si realmente sos un Memorioso".center(100," "))
             
         inicio=1
         final=3
@@ -62,26 +72,6 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
             letra=letra.replace(letra,"- ")
             escondida=escondida+letra
             
-    if eleccion==0:
-        print ("\n")
-        print ("Excelente!, Tendremos un sportfreak en el teclado?.".center(100," "))
-
-    if eleccion==1:
-        print ("\n")
-        print ("Muy buena eleccion!, veamos cuanto sabes de Arte y Musica".center(100," "))
-
-    if eleccion==2:
-        print ("\n")
-        print ("Audaz!, veamos cuanto sabes de nuestro planeta".center(100," "))
-
-    if eleccion==3:
-        print ("\n")
-        print ("El mundo del espectaculo es tan amplio como el resto de las categorias.".center(100," "))
-        print ("Veamos cuanto sabes...  el que avisa no traiciona".center(100," "))
-        
-    if eleccion==4:
-        print ("\n")
-        print ("Historia... Veamos si realmente sos un Memorioso".center(100," "))
                     
     while True:
         print("\n"*4)
@@ -94,19 +84,23 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
         print("*Recuerde introducir el espacio entre cada palabra".center(100," "))
         espacios=respuesta_verdadera.count(" ")
         print(f"*La palabra cuenta con \"{(len(respuesta_verdadera)-espacios)}\" letras*".center(100," "))
-        if pistas_usadas < len(respuesta_verdadera)-espacios and cont2 < len(respuesta_verdadera)-espacios:
-            print("*Escriba \"PISTA\" para revelar una letra*".center(100," "))
+        
+        if pistas_usadas < len(respuesta_verdadera)-espacios:
+            if pistas_usadas < len(respuesta_verdadera)-espacios-1:
+                print("*Escriba \"PISTA\" para revelar una letra*".center(100," "))
+            else:
+                print()
+                print("*ATENCION!!! *".center(100," "))
+                print("*Ya no quedan \"PISTAS\" disponibles*".center(100," "))
             print ("\n")
             respuesta_del_jugador=input(f"La respuesta es: {escondida}""\n"f"Si respondes correctamente sumas {10 - pistas_usadas}Pts!: ")
-        elif pistas_usadas == len(respuesta_verdadera)-espacios and cont2 == len(respuesta_verdadera)-espacios:
-            print ("\n")
-            print ("Ya deberias saber la respuesta")
-            print (f"La respuesta es: {escondida}""\n""Lamentablemente no sumas puntos, esperamos que esta respuesta se guarde en tu memoria")
-            break
         
-        
-        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(respuesta_verdadera)-espacios and cont2 < len(respuesta_verdadera)-espacios:
-            escondida=list(escondida)
+#         print("pistas_usadas",pistas_usadas)
+#         print("len(respuesta_verdadera)-espacios",len(respuesta_verdadera)-espacios)
+#         print("cont2",cont2)
+        if respuesta_del_jugador.lower() == "pista" and pistas_usadas < len(respuesta_verdadera)-espacios and cont2 < len(respuesta_verdadera)-1:
+            print("\n"*10)
+            escondida=list(escondida)            
             pistas_usadas+=1
             pos_letra=escondida.index("_")
             if respuesta_verdadera[cont2] == " ":
@@ -119,14 +113,14 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
 
         if respuesta_del_jugador.lower() == respuesta_verdadera.lower():            
             puntos=10-pistas_usadas
-            print("\n")
+            print("\n"*10)
             print("*"*100)
             print(("CORRECTO").center(100))
             print("*"*100)
             break
         
         if respuesta_del_jugador.lower() != respuesta_verdadera.lower() and respuesta_del_jugador.lower() != "pista":
-            print("\n")
+            print("\n"*10)
             print("*"*100)
             print("*",("INCORRECTO").center(96),"*".rjust(0))
             print("*",(f"La respuesta era: {respuesta_verdadera}").center(96),"*".rjust(0))
@@ -139,6 +133,7 @@ def procesar_respuesta(pregunta_original,respuesta_verdadera,puntos,pos):
     print("\n")
     print(f"*Los puntos totales son: {sumar_matriz(matriz)}*".center(100))
     input(("*oprima \"ENTER\" para continuar*").center(100))
+    print("\n"*10)
 
 def mostrar_matriz(matriz,puntos,eleccion,pos,respuesta_verdadera):    
     matriz[eleccion][pos]=f"{puntos} Pts"
@@ -264,16 +259,24 @@ while True:
             cont-=1
                 
     print(f"\n"*10)
-    print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
-    print(f"**Felicidades, usted hizo: {sumar_matriz(matriz)} de 200 puntos**".center(100))
-    print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
-    print("\n")
-    print("*Sus respuestas*".center(100))
-    print("\n")
+    if sumar_matriz(matriz) > 0:        
+        print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
+        print(f"**Felicidades, usted hizo: {sumar_matriz(matriz)} de 200 puntos**".center(100))
+        print(("*"*(43+int(len(f"{sumar_matriz(matriz)}")))).center(100))
+        
+    else:        
+        print(("*"*(30+int(len(f"{sumar_matriz(matriz)}")))).center(100))
+        print(f"**Usted hizo: {sumar_matriz(matriz)} de 200 puntos**".center(100))
+        print(("*"*(30+int(len(f"{sumar_matriz(matriz)}")))).center(100))
+        
+    print("*"*16)
+    print("*Sus respuestas*")
+    print("*"*16)
+    print()
     diccionario=generar_diccionario(respuestas_totales,matriz)
+    
     for categorias in diccionario:
-        categorias=categorias.rstrip()
-        print(f"{categorias},{diccionario[categorias]}".center(100))
+        print(f"| #{categorias}\n|->{diccionario[categorias]}")
     print("\n")
     ultima_opcion=verificar_ultima_opcion()
         
