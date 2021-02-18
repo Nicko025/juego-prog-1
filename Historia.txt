@@ -1,4 +1,4 @@
-1;¿En que guerra combatió Juana de Arco?;Guerra de los 100 años
+1;¿En que guerra combatió Juana de Arco?;Guerra de los cien años
 2;¿Cuál fue el primer país en ser invadido por Alemania en 1939?;Polonia
 3;¿Que famoso astrónomo sostenía que la tierra giraba alrededor del Sol?;Galileo Galilei
 4;¿Qué hito informático de 1969 cambiaría radicalmente el curso de la historia de la humanidad?;Internet
